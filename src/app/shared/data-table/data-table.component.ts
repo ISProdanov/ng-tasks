@@ -36,11 +36,6 @@ export class DataTableComponent implements OnInit {
     });
   }
 
-  
-  onCheck(index) {
-    console.log(index)
-  }
-
   ngOnDestroy() {
     this.userSubscr.unsubscribe();
   }
