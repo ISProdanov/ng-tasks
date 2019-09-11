@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 
 import {Observable} from "rxjs";
 
-import {DepartmentInterface} from "../interfaces";
+import { DepartmentInterface } from "../interfaces";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,13 @@ export class DepartmentsService {
 
   constructor(private http: HttpClient) {}
 
-  getPositions(): Observable<DepartmentInterface> {
-    return this.http.get(this.apiUrl) as Observable<DepartmentInterface>
+  getDepartments(): Observable<DepartmentInterface[]> {
+    return this.http.get(this.apiUrl) as Observable<DepartmentInterface[]>
+  }
+
+  getDepartment(id: number): Observable<DepartmentInterface> {
+    const departmentUrl = `${this.apiUrl}/${id}`
+
+    return this.http.get(departmentUrl) as Observable<DepartmentInterface>
   }
 }
