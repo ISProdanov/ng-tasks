@@ -1,6 +1,7 @@
 import {Component, OnInit} from "@angular/core";
-
-import {DepartmentsService, PositionsService, UsersService} from "../../services";
+import {UsersService} from "../../services/users.service";
+import {DepartmentsService} from "../../services/departments.service";
+import {PositionsService} from "../../services/positions.service";
 
 @Component({
   selector: "app-users",
@@ -9,9 +10,12 @@ import {DepartmentsService, PositionsService, UsersService} from "../../services
 })
 export class UsersComponent implements OnInit{
   constructor(
-    private usersService: UsersService,
-    private positionsService: PositionsService,
+    private usersService: UsersService
+    ,
+    private positionsService: PositionsService
+    ,
     private departmentService: DepartmentsService
+
   ) {}
 
   ngOnInit(): void {

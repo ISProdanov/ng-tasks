@@ -1,4 +1,5 @@
-import { PositionInterface } from '../interfaces';
+import {PositionInterface} from "../interfaces/position.interface";
+
 
 export class Position implements PositionInterface {
   public id: number;
