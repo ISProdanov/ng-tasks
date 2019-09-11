@@ -10,7 +10,6 @@ import {PositionInterface} from "../interfaces";
 })
 
 export class PositionsService {
-
   apiUrl: string = 'https://aluric.firebaseio.com/positions.json'
 
   constructor(private http: HttpClient) {}

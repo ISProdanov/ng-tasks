@@ -1,15 +1,20 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { User } from "../../models/user.model";
-import { Subscription } from "rxjs";
-import { UsersService } from "../../services/users.service";
+import {Component, OnInit} from "@angular/core";
+
+import {DepartmentsService, PositionsService, UsersService} from "../../services";
 
 @Component({
   selector: "app-users",
   templateUrl: "./users.component.html",
   styleUrls: ["./users.component.scss"]
 })
-export class UsersComponent {
-  constructor() {}
+export class UsersComponent implements OnInit{
+  constructor(
+    private usersService: UsersService,
+    private positionsService: PositionsService,
+    private departmentService: DepartmentsService
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit(): void {
+  }
 }
+

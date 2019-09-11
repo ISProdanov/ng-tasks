@@ -1,3 +1,3 @@
-export * from './department.module'
-export * from  './position.model'
+export * from './department.model'
+export * from './position.model'
 export * from './user.model'
