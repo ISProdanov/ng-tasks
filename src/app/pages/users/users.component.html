@@ -1,5 +1,18 @@
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<mat-form-field>
+  <mat-label>Position Filter</mat-label>
 
+  <mat-select [(value)]="selectedValue">
+    <mat-option>None</mat-option>
+
+    <mat-option *ngFor="let position of positions" [value]="position.name">
+      {{position.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+{{selectedValue}}
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
   <ng-container matColumnDef="firstName">
     <th mat-header-cell *matHeaderCellDef> First Name </th>
     <td mat-cell *matCellDef="let user"> {{user.firstName}} </td>

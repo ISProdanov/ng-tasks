@@ -2,9 +2,10 @@ import {Component, OnDestroy, OnInit} from "@angular/core";
 
 import {Subscription} from "rxjs";
 
-import {User} from "../../models";
+import {Department, Position, User} from "../../models";
 import {DepartmentsService, PositionsService, UsersService} from "../../services";
 import {DepartmentInterface, PositionInterface, UserInterface} from "../../interfaces";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: "app-users",
@@ -13,9 +14,13 @@ import {DepartmentInterface, PositionInterface, UserInterface} from "../../inter
 })
 export class UsersComponent implements OnInit, OnDestroy {
   users: User[];
+  positions: Position[];
+  departments: Department[];
   usersSubsrcription: Subscription;
+  positionsSubsrcription: Subscription;
   displayedColumns: string[] = ['firstName', 'lastName', 'positionName', 'departmentName'];
-  dataSource = this.users;
+  dataSource: User[] = [];
+  selectedValue: string;
 
   constructor(
     private usersService: UsersService,
@@ -31,30 +36,42 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.users = users;
     });
 
-    this.positionsService.getPositions()
-      .subscribe((positions) => this.departmentsService.getDepartments()
-        .subscribe((departments) => this.usersService.getUsers()
-          .subscribe(() => {
-            this.users.map( (user: UserInterface) => {
-              positions.filter( (position: PositionInterface) => {
-                 if (user.positionId == position.id) {
-                   user.positionName = position.name;
-                 }
-              });
-              
-              departments.filter( (department: DepartmentInterface) => {
-                if (user.departmentId == department.id) {
-                  user.departmentName = department.name
-                }
-              })
-            })
-        })));
+    this.positionsSubsrcription = this.positionsService.getPositions()
+      .subscribe((positions) => {
+          this.positions= positions;
 
-  }
+          this.departmentsService.getDepartments()
+            .subscribe((departments) => {
+              this.usersService.getUsers()
+                .subscribe(() => {
+                  this.departments = departments;
+
+                  this.users.map((user: UserInterface) => {
+                    positions.filter((position: PositionInterface) => {
+                      if (user.positionId == position.id) {
+                        user.positionName = position.name;
+                      }
+                    });
+
+                    departments.filter((department: DepartmentInterface) => {
+                      if (user.departmentId == department.id) {
+                        user.departmentName = department.name
+                      }
+                    })
+                  })
+                })
+            })
+        }
+      );
+  };
 
   ngOnDestroy(): void {
     if (this.usersSubsrcription) {
       this.usersSubsrcription.unsubscribe()
+    }
+
+    if (this.positionsSubsrcription) {
+      this.positionsSubsrcription.unsubscribe()
     }
   }
 }

@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { UsersComponent } from './pages';
 
 import { MatTableModule } from '@angular/material';
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { MatTableModule } from '@angular/material';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatTableModule
+    MatTableModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
