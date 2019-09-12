@@ -1,11 +1,10 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
+import {MatTableDataSource} from "@angular/material/table";
 
 import {Subscription} from "rxjs";
 
-import {Department, Position, User} from "../../models";
 import {DepartmentsService, PositionsService, UsersService} from "../../services";
 import {DepartmentInterface, PositionInterface, UserInterface} from "../../interfaces";
-import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: "app-users",
@@ -13,14 +12,14 @@ import {MatTableDataSource} from "@angular/material/table";
   styleUrls: ["./users.component.scss"]
 })
 export class UsersComponent implements OnInit, OnDestroy {
-  users: User[];
-  positions: Position[];
-  departments: Department[];
-  usersSubsrcription: Subscription;
-  positionsSubsrcription: Subscription;
-  displayedColumns: string[] = ['firstName', 'lastName', 'positionName', 'departmentName'];
-  dataSource: User[] = [];
-  selectedValue: string;
+  public usersSubsrcription: Subscription;
+  public positionsSubsrcription: Subscription;
+  public departmentsSubscription: Subscription;
+
+  public displayedColumns: string[] = ['firstName', 'lastName', 'positionName', 'departmentName'];
+  public dataSource: any;
+
+  public selectedValue: string;
 
   constructor(
     private usersService: UsersService,
@@ -29,24 +28,15 @@ export class UsersComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.usersSubsrcription = this.usersService.getUsers()
-      .subscribe( (users: User[]) => {
-        this.dataSource = users;
-
-        this.users = users;
-    });
-
     this.positionsSubsrcription = this.positionsService.getPositions()
-      .subscribe((positions) => {
-          this.positions= positions;
+      .subscribe((positions: PositionInterface[]) => {
+          this.departmentsSubscription = this.departmentsService.getDepartments()
+            .subscribe((departments: DepartmentInterface[]) => {
+              this.usersSubsrcription = this.usersService.getUsers()
+                .subscribe((users: UserInterface[]) => {
+                  users.map((user: UserInterface) => {
+                    this.dataSource = new MatTableDataSource(users);
 
-          this.departmentsService.getDepartments()
-            .subscribe((departments) => {
-              this.usersService.getUsers()
-                .subscribe(() => {
-                  this.departments = departments;
-
-                  this.users.map((user: UserInterface) => {
                     positions.filter((position: PositionInterface) => {
                       if (user.positionId == position.id) {
                         user.positionName = position.name;
@@ -55,7 +45,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
                     departments.filter((department: DepartmentInterface) => {
                       if (user.departmentId == department.id) {
-                        user.departmentName = department.name
+                        user.departmentName = department.name;
                       }
                     })
                   })
@@ -72,6 +62,10 @@ export class UsersComponent implements OnInit, OnDestroy {
 
     if (this.positionsSubsrcription) {
       this.positionsSubsrcription.unsubscribe()
+    }
+
+    if (this.departmentsSubscription) {
+      this.departmentsSubscription.unsubscribe()
     }
   }
 }
