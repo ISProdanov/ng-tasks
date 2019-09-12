@@ -12,6 +12,9 @@ import {DepartmentInterface, PositionInterface, UserInterface} from "../../inter
   styleUrls: ["./users.component.scss"]
 })
 export class UsersComponent implements OnInit, OnDestroy {
+  public positions: PositionInterface[];
+  public departments: DepartmentInterface[];
+
   public usersSubsrcription: Subscription;
   public positionsSubsrcription: Subscription;
   public departmentsSubscription: Subscription;
@@ -37,13 +40,19 @@ export class UsersComponent implements OnInit, OnDestroy {
                   users.map((user: UserInterface) => {
                     this.dataSource = new MatTableDataSource(users);
 
-                    positions.filter((position: PositionInterface) => {
+                    this.positions = positions;
+                    this.departments = departments;
+
+                    user.positionName = '';
+                    user.departmentName = '';
+
+                    this.positions.filter((position: PositionInterface) => {
                       if (user.positionId == position.id) {
                         user.positionName = position.name;
                       }
                     });
 
-                    departments.filter((department: DepartmentInterface) => {
+                    this.departments.filter((department: DepartmentInterface) => {
                       if (user.departmentId == department.id) {
                         user.departmentName = department.name;
                       }
