@@ -16,10 +16,4 @@ export class DepartmentsService {
   getDepartments(): Observable<DepartmentInterface[]> {
     return this.http.get(this.apiUrl) as Observable<DepartmentInterface[]>
   }
-
-  getDepartment(id: number): Observable<DepartmentInterface> {
-    const departmentUrl = `${this.apiUrl}/${id}`
-
-    return this.http.get(departmentUrl) as Observable<DepartmentInterface>
-  }
 }

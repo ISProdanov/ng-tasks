@@ -12,6 +12,7 @@ import { AppComponent } from './app.component';
 
 import { UsersComponent } from './pages';
 import {FilterPipe} from "./pipes";
+import {UsersResolver} from "./services";
 
 
 @NgModule({
@@ -30,7 +31,7 @@ import {FilterPipe} from "./pipes";
     MatSelectModule,
     CdkTableModule
   ],
-  providers: [],
+  providers: [UsersResolver],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

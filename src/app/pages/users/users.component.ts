@@ -1,16 +1,19 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
 import {MatTableDataSource} from "@angular/material/table";
+import {ActivatedRoute} from "@angular/router";
 
 import {Subscription} from "rxjs";
 
 import {DepartmentsService, PositionsService, UsersService} from "../../services";
 import {DepartmentInterface, PositionInterface, UserInterface} from "../../interfaces";
+import {User} from "../../models";
 
 @Component({
   selector: "app-users",
   templateUrl: "./users.component.html",
   styleUrls: ["./users.component.scss"]
 })
+
 export class UsersComponent implements OnInit, OnDestroy {
   public positions: PositionInterface[];
   public departments: DepartmentInterface[];
@@ -50,11 +53,13 @@ export class UsersComponent implements OnInit, OnDestroy {
   constructor(
     private usersService: UsersService,
     private positionsService: PositionsService,
-    private departmentsService: DepartmentsService
+    private departmentsService: DepartmentsService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.positionsSubsrcription = this.positionsService.getPositions()
+    this.route.data.forEach( (data: {user: User[]}) =>
+      this.positionsSubsrcription = this.positionsService.getPositions()
       .subscribe((positions: PositionInterface[]) => {
           this.departmentsSubscription = this.departmentsService.getDepartments()
             .subscribe((departments: DepartmentInterface[]) => {
@@ -84,7 +89,7 @@ export class UsersComponent implements OnInit, OnDestroy {
                 })
             })
         }
-      );
+      ));
   };
 
   ngOnDestroy(): void {

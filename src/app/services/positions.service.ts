@@ -17,10 +17,4 @@ export class PositionsService {
   getPositions(): Observable<PositionInterface[]> {
    return this.http.get(this.apiUrl) as Observable<PositionInterface[]>
   }
-
-  getPostition(id: number): Observable<PositionInterface> {
-    const positionUrl = `https://aluric.firebaseio.com/positions/${id}.json`;
-
-    return this.http.get(positionUrl) as Observable<PositionInterface>
-  }
 }
