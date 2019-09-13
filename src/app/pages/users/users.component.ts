@@ -19,8 +19,30 @@ export class UsersComponent implements OnInit, OnDestroy {
   public positionsSubsrcription: Subscription;
   public departmentsSubscription: Subscription;
 
-  public displayedColumns: string[] = ['firstName', 'lastName', 'positionName', 'departmentName'];
-  public dataSource: any;
+  public columns: any[] = [
+    {
+      def: 'firstName',
+      name: 'First Name',
+      cell: row => `${row.firstName}`
+    },
+    {
+      def: 'lastName',
+      name: 'Last Name',
+      cell: row => `${row.lastName}`
+    },
+    {
+      def: 'positionName',
+      name: 'Position',
+      cell: row => `${row.positionName}`
+    },
+    {
+      def: 'departmentName',
+      name: 'Department',
+      cell: row => `${row.departmentName}`
+    }
+  ];
+  public displayedColumns = this.columns.map( x => x.def)
+  public dataSource = new MatTableDataSource();
 
   public selectedValue: string;
 
