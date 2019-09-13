@@ -5,11 +5,13 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FilterPipe implements PipeTransform {
 
-  transform(dataSource: any, terms: any): any {
-    if( terms === undefined ) return dataSource.data;
+  transform(dataSource: any, position: any, department: any): any {
+    if( position === undefined || department === undefined ) return dataSource.data;
 
-    if (terms) {
-      return dataSource.data.filter(user => user.positionId === terms)
+    if (position && department) {
+      return dataSource.data.filter(user => {
+        return user.positionId === position && user.departmentId === department
+      })
     }
   }
 }

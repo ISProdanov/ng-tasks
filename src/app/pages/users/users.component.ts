@@ -44,7 +44,8 @@ export class UsersComponent implements OnInit, OnDestroy {
   public displayedColumns = this.columns.map( x => x.def)
   public dataSource = new MatTableDataSource();
 
-  public selectedValue: string;
+  public positionsValue: string;
+  public departmentsValue: string;
 
   constructor(
     private usersService: UsersService,

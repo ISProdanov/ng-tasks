@@ -1,7 +1,7 @@
 <mat-form-field>
-  <mat-label>Position Filter</mat-label>
+  <mat-label>Position</mat-label>
 
-  <mat-select [(ngModel)]="selectedValue">
+  <mat-select [(value)]="positionsValue">
     <mat-option>None</mat-option>
 
     <mat-option *ngFor="let position of positions" [value]="position.id">
@@ -10,7 +10,19 @@
   </mat-select>
 </mat-form-field>
 
-<mat-table [dataSource]="dataSource | filter:selectedValue">
+<mat-form-field>
+  <mat-label>Department</mat-label>
+
+  <mat-select [(value)]="departmentsValue">
+    <mat-option>None</mat-option>
+
+    <mat-option *ngFor="let department of departments" [value]="department.id">
+      {{department.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-table [dataSource]="dataSource | filter:positionsValue:departmentsValue">
   <ng-container *ngFor="let column of columns" [cdkColumnDef]="column.def">
     <mat-header-cell *cdkHeaderCellDef>{{ column.name }}</mat-header-cell>
     <mat-cell *cdkCellDef="let row">{{ column.cell(row) }}</mat-cell>
