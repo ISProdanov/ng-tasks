@@ -1,7 +1,7 @@
 <mat-form-field>
   <mat-label>Position Filter</mat-label>
 
-  <mat-select [(value)]="selectedValue">
+  <mat-select [(ngModel)]="selectedValue">
     <mat-option>None</mat-option>
 
     <mat-option *ngFor="let position of positions" [value]="position.id">
@@ -10,7 +10,7 @@
   </mat-select>
 </mat-form-field>
 
-<mat-table [dataSource]="dataSource">
+<mat-table [dataSource]="dataSource | filter:selectedValue">
   <ng-container *ngFor="let column of columns" [cdkColumnDef]="column.def">
     <mat-header-cell *cdkHeaderCellDef>{{ column.name }}</mat-header-cell>
     <mat-cell *cdkCellDef="let row">{{ column.cell(row) }}</mat-cell>
