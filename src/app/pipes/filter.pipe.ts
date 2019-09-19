@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
 
 @Pipe({
   name: 'filter'
@@ -6,32 +6,27 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FilterPipe implements PipeTransform {
 
   transform(dataSource: any, position: any, department: any): any {
-    if( position === undefined && department === undefined ) return dataSource.data;
+    if (position === undefined && department === undefined) {
+      return dataSource.data
+    };
 
-    switch (position || department) {
-      case !position && department: {
-        return dataSource.data.filter(user => {
-          return user.departmentId === department
-        });
+    if (position === undefined && department) {
+      return dataSource.data.filter(user => {
+        return user.departmentId === department
+      })
+    };
 
-        break;
-      }
+    if (department === undefined && position) {
+      return dataSource.data.filter(user => {
+        return (user.positionId === position)
+      })
+    };
 
-      case !department && position: {
-        return dataSource.data.filter(user => {
-          return (user.positionId === position)
-        });
 
-        break;
-      }
-
-      case position && department: {
-        return dataSource.data.filter(user => {
-          return user.positionId === position && user.departmentId === department
-        });
-
-        break;
-      }
-    }
+    if (position && department) {
+      return dataSource.data.filter(user => {
+        return user.positionId === position && user.departmentId === department
+      })
+    };
   }
 }

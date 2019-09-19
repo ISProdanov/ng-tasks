@@ -1,7 +1,7 @@
 import {PositionInterface} from "../interfaces/position.interface";
 
 
-export class Position implements PositionInterface {
+export class PositionModel implements PositionInterface {
   public id: number;
   public name: string;
 

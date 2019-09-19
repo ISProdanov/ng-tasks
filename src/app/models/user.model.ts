@@ -1,6 +1,6 @@
 import {UserInterface} from "../interfaces/user.interface";
 
-export class User implements UserInterface {
+export class UserModel implements UserInterface {
   public id: number;
   public firstName: string;
   public lastName: string;

@@ -1,6 +1,6 @@
 import {DepartmentInterface} from "../interfaces/department.interface";
 
-export class Department implements DepartmentInterface {
+export class DepartmentModel implements DepartmentInterface {
   public id: number;
   public name: string;
 
