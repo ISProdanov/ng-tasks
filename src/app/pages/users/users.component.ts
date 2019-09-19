@@ -1,12 +1,9 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {MatTableDataSource} from "@angular/material/table";
 import {ActivatedRoute} from "@angular/router";
 
-import {Subscription} from "rxjs";
-
-import {DepartmentsService, PositionsService, UsersService} from "../../services";
+import {UserModel} from "../../models";
 import {DepartmentInterface, PositionInterface, UserInterface} from "../../interfaces";
-import {DepartmentModel, PositionModel, UserModel} from "../../models";
 
 @Component({
   selector: "app-users",
@@ -14,7 +11,7 @@ import {DepartmentModel, PositionModel, UserModel} from "../../models";
   styleUrls: ["./users.component.scss"]
 })
 
-export class UsersComponent implements OnInit, OnDestroy {
+export class UsersComponent implements OnInit {
 
 
   public columns: any[] = [
@@ -40,46 +37,33 @@ export class UsersComponent implements OnInit, OnDestroy {
     }
   ];
 
-  users: UserModel[];
-
   public displayedColumns: string[];
-  public dataSource: any;
+  public dataSource: MatTableDataSource<UserModel[] | PositionInterface[] | DepartmentInterface[]>;
 
   public positionsValue: string;
-
-  ngOnInit(): void {
-    this.displayedColumns = this.columns.map(x => x.def)
-
-    this.route.data.subscribe( (data: {users: Array<UserInterface | PositionInterface | DepartmentInterface>}) => {
-      this.dataSource = new MatTableDataSource(data.users);
-
-        console.log(data)
-    }
-
-  )
-
-  };
-
   public departmentsValue: string;
 
-  constructor(
+  public positions: PositionInterface[] = [];
+  public departments: DepartmentInterface[] = [];
+  public dataArray: any[] = [];
 
-    private route: ActivatedRoute
-  ) {
+  constructor(private route: ActivatedRoute) {
   }
 
-  ngOnDestroy(): void {
-    // if (this.usersSubsrcription) {
-    //   this.usersSubsrcription.unsubscribe()
-    // }
-    //
-    // if (this.positionsSubsrcription) {
-    //   this.positionsSubsrcription.unsubscribe()
-    // }
-    //
-    // if (this.departmentsSubscription) {
-    //   this.departmentsSubscription.unsubscribe()
-    // }
-  }
+  ngOnInit(): void {
+    this.displayedColumns = this.columns.map(x => x.def);
+
+    this.route.data.subscribe((data: { users: Array<UserInterface[] | PositionInterface[] | DepartmentInterface[]> }) => {
+        data.users.map(res => {
+          this.dataArray.push(res)
+        });
+
+        this.dataSource = new MatTableDataSource(this.dataArray[0]);
+        this.positions = this.dataArray[1];
+        this.departments = this.dataArray[2];
+      }
+    )
+
+  };
 }
 
