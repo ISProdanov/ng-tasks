@@ -30,3 +30,9 @@
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
+
+<div *ngIf="errorMsg">
+  <h1>An error occured:</h1>
+
+  <p>{{errorMsg}}</p>
+</div>

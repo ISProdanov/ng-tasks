@@ -1,20 +1,15 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-
+import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
+
 import {UserInterface} from "../interfaces";
+import {MainService} from "./main.service";
 
 @Injectable({
   providedIn: "root"
 })
-export class UsersService {
-  apiUrl: string = 'https://aluric.firebaseio.com/users.json'
+export class UsersService extends MainService {
 
-  constructor (
-    private http: HttpClient
-  ) {}
-
-  getUsers(): Observable<UserInterface[]> {
-    return this.http.get(this.apiUrl) as Observable<UserInterface[]>
-  }
+ getData(controler: string): Observable<UserInterface[]> {
+   return super.getData(controler);
+ }
 }

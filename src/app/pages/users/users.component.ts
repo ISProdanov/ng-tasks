@@ -3,6 +3,9 @@ import {MatTableDataSource} from "@angular/material/table";
 import {ActivatedRoute} from "@angular/router";
 import {DepartmentInterface, PositionInterface, UserInterface} from "../../interfaces";
 import {DepartmentModel, PositionModel, UserModel} from "../../models";
+import {catchError} from "rxjs/operators";
+import {throwError} from "rxjs";
+import {error} from "util";
 
 @Component({
   selector: "app-users",
@@ -44,8 +47,9 @@ export class UsersComponent implements OnInit {
   public positionsValue: string;
   public departmentsValue: string;
 
-  constructor(private route: ActivatedRoute) {
-  }
+  public errorMsg: string = '';
+
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.displayedColumns = this.columns.map(x => x.def);
@@ -83,9 +87,9 @@ export class UsersComponent implements OnInit {
         this.dataSource = new MatTableDataSource(this.dataArray[0]);
         this.positions = this.dataArray[1];
         this.departments = this.dataArray[2];
-      }
+      },
+      error => this.errorMsg = error
     )
-
   };
 }
 

@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from "@angular/router";
 
-import {Observable, zip} from "rxjs";
-import {map} from "rxjs/operators";
+import {Observable, throwError, zip} from "rxjs";
+import {catchError, map} from "rxjs/operators";
 
 import {UsersService} from "./users.service";
 import {PositionsService} from "./positions.service";
@@ -27,13 +27,13 @@ export class UsersResolver implements Resolve<Array<UserInterface[] | PositionIn
     state: RouterStateSnapshot):
     Observable<Array<UserInterface[] | PositionInterface[] | DepartmentInterface[]>> {
     return zip(
-      this.usersService.getUsers().pipe(
+      this.usersService.getData('users').pipe(
         map((users: UserInterface[]) => users.map((user: UserInterface) => user))
       ),
-      this.positionsService.getPositions().pipe(
+      this.positionsService.getData('positions').pipe(
         map((positions: PositionInterface[]) => positions.map((position: PositionInterface) => position))
       ),
-      this.departmentsService.getDepartments().pipe(
+      this.departmentsService.getData('departments').pipe(
         map((departments: DepartmentInterface[]) => departments.map((department: DepartmentInterface) => {
           return department
         }))
