@@ -32,7 +32,7 @@ export class UsersResolver implements Resolve<Array<UserModel[] | PositionModel[
           switchMap((departments: DepartmentInterface[]) => {
             return this.usersService.getUsers().pipe(
               map((users: UserInterface[]) => {
-                users.map((user: UserInterface) => {
+                const usersModel = users.map((user: UserInterface) => {
                   user.positionName = '';
                   user.departmentName = '';
 
@@ -54,14 +54,14 @@ export class UsersResolver implements Resolve<Array<UserModel[] | PositionModel[
 
                   return new UserModel(user);
                 });
-                positions.map( (position: PositionInterface) => {
+                const positionModels = positions.map( (position: PositionInterface) => {
                   return new PositionModel(position);
                 });
-                departments.map( (department: DepartmentInterface) => {
+                const departmentsModels = departments.map( (department: DepartmentInterface) => {
                   return new DepartmentModel(department);
                 });
 
-                return [users, positions, departments];
+                return [usersModel, positionModels, departmentsModels];
               })
             );
           })
