@@ -4,12 +4,11 @@ import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/rou
 import {Observable} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 
-import {DepartmentInterface, PositionInterface, UserInterface} from '../interfaces';
 import {UsersService} from './users.service';
 import {PositionsService} from './positions.service';
 import {DepartmentsService} from './departments.service';
 import {DepartmentModel, PositionModel, UserModel} from '../models';
-
+import {DepartmentInterface, PositionInterface, UserInterface} from '../interfaces';
 
 @Injectable({
   providedIn: 'root'
