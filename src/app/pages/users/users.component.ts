@@ -5,7 +5,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
 
 import {DepartmentInterface, PositionInterface, UserInterface} from '../../interfaces';
-import {DepartmentModel, PositionModel, UserModel} from "../../models";
+import {DepartmentModel, PositionModel, UserModel} from '../../models';
 
 @Component({
   selector: 'app-users',
@@ -45,8 +45,8 @@ export class UsersComponent implements OnInit, OnDestroy {
   public positionsValue: string;
   public departmentsValue: string;
 
-  public positions: PositionInterface[] = [];
-  public departments: DepartmentInterface[] = [];
+  public positions: PositionModel[] = [];
+  public departments: DepartmentModel[] = [];
 
   constructor(private route: ActivatedRoute) {
   }
@@ -57,12 +57,10 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.dataSubscription = this.route.data.subscribe(
       (data: { users: Array<UserModel[] | PositionModel[] | DepartmentModel[]> }) => {
         const users = data.users[0] as UserModel[];
-        const positions = data.users[1] as PositionModel[];
-        const departments = data.users[2] as DepartmentModel[];
 
         this.dataSource = new MatTableDataSource(users);
-        this.positions = positions;
-        this.departments = departments;
+        this.positions = data.users[2] as PositionModel[];
+        this.departments = data.users[2] as DepartmentModel[];
       }
     );
   }
