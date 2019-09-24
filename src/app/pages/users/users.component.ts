@@ -5,6 +5,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
 
 import {DepartmentInterface, PositionInterface, UserInterface} from '../../interfaces';
+import {DepartmentModel, PositionModel, UserModel} from "../../models";
 
 @Component({
   selector: 'app-users',
@@ -54,10 +55,12 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.displayedColumns = this.columns.map(x => x.def);
 
     this.dataSubscription = this.route.data.subscribe(
-      (data: { users: Array<UserInterface[] | PositionInterface[] | DepartmentInterface[]> }) => {
-        const users = data.users[0] as UserInterface[];
-        const positions = data.users[1] as PositionInterface[];
-        const departments = data.users[2] as DepartmentInterface[];
+      (data: { users: Array<UserModel[] | PositionModel[] | DepartmentModel[]> }) => {
+        const users = data.users[0] as UserModel[];
+        const positions = data.users[1] as PositionModel[];
+        const departments = data.users[2] as DepartmentModel[];
+
+        console.log(data.users)
 
         this.dataSource = new MatTableDataSource(users);
         this.positions = positions;

@@ -36,7 +36,7 @@ export class UsersResolver implements Resolve<Array<UserModel[] | PositionModel[
                   user.positionName = '';
                   user.departmentName = '';
 
-                  const filteredPosition = positions.filter((position: PositionInterface) => {
+                  const filteredPosition = positions.filter((position: PositionModel) => {
                     return user.positionId === position.id;
                   });
 
@@ -44,7 +44,7 @@ export class UsersResolver implements Resolve<Array<UserModel[] | PositionModel[
                     user.positionName = filteredPosition[0].name;
                   }
 
-                  const filteredDepartment = departments.filter((department: DepartmentInterface) => {
+                  const filteredDepartment = departments.filter((department: DepartmentModel) => {
                     return user.departmentId === department.id;
                   });
 
@@ -60,6 +60,7 @@ export class UsersResolver implements Resolve<Array<UserModel[] | PositionModel[
                 departments.map( (department: DepartmentInterface) => {
                   return new DepartmentModel(department);
                 });
+
                 return [users, positions, departments];
               })
             );
