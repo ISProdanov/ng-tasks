@@ -7,12 +7,10 @@ import {catchError} from 'rxjs/operators';
   providedIn: 'root'
 })
 export class MainService {
-  apiUrl = 'https://aluric.firebaseio.com';
-
   constructor( private http: HttpClient ) {}
 
-  getData(path: string): Observable<any[]> {
-    return this.http.get(`${this.apiUrl}/${path}.json`).pipe(
+  protected getData(path: string): Observable<any[]> {
+    return this.http.get(`https://aluric.firebaseio.com/${path}.json`).pipe(
       catchError( err => {
         return of(err);
       })

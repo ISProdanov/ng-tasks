@@ -1,4 +1,6 @@
 import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+
 import {Observable} from 'rxjs';
 
 import {UserInterface} from '../interfaces';
@@ -9,7 +11,11 @@ import {MainService} from './main.service';
 })
 export class UsersService extends MainService {
 
- getData(path: string): Observable<UserInterface[]> {
-   return super.getData(path);
+  constructor( http: HttpClient) {
+    super(http);
+  }
+
+ getUsers(): Observable<UserInterface[]> {
+   return super.getData('users');
  }
 }

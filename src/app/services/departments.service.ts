@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+
 import {Observable} from 'rxjs';
 
 import {MainService} from './main.service';
@@ -9,8 +11,10 @@ import {DepartmentInterface} from '../interfaces';
 })
 
 export class DepartmentsService extends MainService {
-  getData(path: string): Observable<DepartmentInterface[]> {
-    return super.getData(path);
+  constructor(http: HttpClient) {
+    super(http);
   }
-
+  getDepartments(): Observable<DepartmentInterface[]> {
+    return super.getData('departments');
+  }
 }

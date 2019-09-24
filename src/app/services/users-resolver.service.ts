@@ -26,19 +26,19 @@ export class UsersResolver implements Resolve<Array<UserModel[] | PositionModel[
     state: RouterStateSnapshot):
     Observable<Array<UserModel[] | PositionModel[] | DepartmentModel[]>> {
     return zip(
-      this.usersService.getData('users').pipe(
+      this.usersService.getUsers().pipe(
         map((users: UserInterface[]) => {
             return users.map((user: UserInterface) => new UserModel(user));
           }
         )
       ),
-      this.positionsService.getData('positions').pipe(
+      this.positionsService.getPositions().pipe(
         map((positions: PositionInterface[]) => {
             return positions.map((position: PositionInterface) => new PositionModel(position));
           }
         )
       ),
-      this.departmentsService.getData('departments').pipe(
+      this.departmentsService.getDepartments().pipe(
         map((departments: DepartmentInterface[]) => {
             return departments.map((department: DepartmentInterface) => new DepartmentModel(department));
           }
