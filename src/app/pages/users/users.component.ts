@@ -4,7 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 
 import {DepartmentModel, PositionModel, UserModel} from '../../models';
 import {Subscription} from 'rxjs';
-import {DepartmentInterface, PositionInterface} from "../../interfaces";
+import {DepartmentInterface, PositionInterface, UserInterface} from "../../interfaces";
 
 @Component({
   selector: 'app-users',
@@ -65,7 +65,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   public initData() {
     this.dataSubscr = this.route.data.subscribe(
       (data: { users: Array<UserModel[] | PositionModel[] | DepartmentModel[]> }) => {
-        data.users[0].map((user: UserModel) => {
+        data.users[0].map((user: UserInterface) => {
           user.positionName = '';
           user.departmentName = '';
 
