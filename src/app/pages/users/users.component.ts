@@ -88,15 +88,6 @@ export class UsersComponent implements OnInit, OnDestroy {
           return user;
         })
       });
-    //
-    // this.dataSource = new MatTableDataSource(data.users[0]);
-    // this.positions = data.users[1];
-    // this.departments = data.users[2];
-    // },
-    // error => {
-    //   return this.error = error;
-    // }
-    // );
-    // }
+
   }
 }
