@@ -77,6 +77,8 @@ export class UsersComponent implements OnInit {
           return user;
         });
 
+        console.log(data.users)
+
         this.dataSource = new MatTableDataSource(users);
         this.positions = positions;
         this.departments = departments;

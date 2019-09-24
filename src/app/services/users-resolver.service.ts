@@ -37,7 +37,7 @@ export class UsersResolver implements Resolve<Array<UserInterface[] | PositionIn
       this.departmentsService.getDepartments().pipe(
         map((departments: DepartmentInterface[]) => {
           return departments.map((department: DepartmentInterface) => {
-            return new PositionModel(department);
+            return new DepartmentModel(department);
           });
         })
       )
