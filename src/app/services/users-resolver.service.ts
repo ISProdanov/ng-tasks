@@ -1,22 +1,21 @@
-import {Injectable} from "@angular/core";
-import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from "@angular/router";
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 
-import {Observable} from "rxjs";
-import {map, switchMap} from "rxjs/operators";
+import {Observable} from 'rxjs';
+import {map, switchMap} from 'rxjs/operators';
 
-import {DepartmentInterface, PositionInterface, UserInterface} from "../interfaces";
-import {UsersService} from "./users.service";
-import {PositionsService} from "./positions.service";
-import {DepartmentsService} from "./departments.service";
+import {DepartmentInterface, PositionInterface, UserInterface} from '../interfaces';
+import {UsersService} from './users.service';
+import {PositionsService} from './positions.service';
+import {DepartmentsService} from './departments.service';
+import {DepartmentModel, PositionModel} from '../models';
 
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 
 export class UsersResolver implements Resolve<Array<UserInterface[] | PositionInterface[] | DepartmentInterface[]>> {
-  public response: any[] = [];
-
   constructor(
     private usersService: UsersService,
     private positionsService: PositionsService,
@@ -27,7 +26,7 @@ export class UsersResolver implements Resolve<Array<UserInterface[] | PositionIn
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot):
-    Observable<Array<UserInterface[] | PositionInterface[] | DepartmentInterface []>> {
+    Observable<Array<UserInterface[] | PositionModel[] | DepartmentModel[]>> {
     return this.positionsService.getPositions().pipe(
       switchMap((positions: PositionInterface[]) => {
         return this.departmentsService.getDepartments().pipe(
@@ -37,36 +36,30 @@ export class UsersResolver implements Resolve<Array<UserInterface[] | PositionIn
                 users.map((user: UserInterface) => {
 
                   const filteredPosition = positions.filter((position: PositionInterface) => {
-                    if (user.positionId == position.id) {
-                      user.positionName = position.name
-                    }
+                    return user.positionId === position.id;
                   });
 
                   if (filteredPosition.length > 0) {
-                    return filteredPosition
+                    user.positionName = filteredPosition[0].name;
                   }
 
                   const filteredDepartment = departments.filter((department: DepartmentInterface) => {
-                    if (user.departmentId == department.id) {
-                      user.departmentName = department.name
-                    }
+                    return user.departmentId === department.id;
                   });
 
                   if (filteredDepartment.length > 0) {
-                    return filteredDepartment
+                    user.departmentName = filteredDepartment[0].name;
                   }
 
-                  return user
+                  return user;
                 });
 
-                this.response.push(users, positions, departments);
-
-                return this.response
+                return [users, positions, departments];
               })
-            )
+            );
           })
-        )
+        );
       })
-    )
+    );
   }
 }

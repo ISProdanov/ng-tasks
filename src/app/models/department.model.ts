@@ -1,4 +1,4 @@
-import {DepartmentInterface} from "../interfaces/department.interface";
+import {DepartmentInterface} from '../interfaces/department.interface';
 
 export class DepartmentModel implements DepartmentInterface {
   public id: number;
