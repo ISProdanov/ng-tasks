@@ -15,7 +15,7 @@ import {DepartmentModel, PositionModel, UserModel} from '../models';
   providedIn: 'root'
 })
 
-export class UsersResolver implements Resolve<Array<UserInterface[] | PositionInterface[] | DepartmentInterface[]>> {
+export class UsersResolver implements Resolve<Array<UserModel[] | PositionModel[] | DepartmentModel[]>> {
   constructor(
     private usersService: UsersService,
     private positionsService: PositionsService,
