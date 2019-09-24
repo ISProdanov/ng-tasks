@@ -2,9 +2,10 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {ActivatedRoute} from '@angular/router';
 
-import {DepartmentModel, PositionModel, UserModel} from '../../models';
 import {Subscription} from 'rxjs';
-import {DepartmentInterface, PositionInterface, UserInterface} from "../../interfaces";
+
+import {DepartmentModel, PositionModel, UserModel} from '../../models';
+import {DepartmentInterface, PositionInterface, UserInterface} from '../../interfaces';
 
 @Component({
   selector: 'app-users',
@@ -65,29 +66,39 @@ export class UsersComponent implements OnInit, OnDestroy {
   public initData() {
     this.dataSubscr = this.route.data.subscribe(
       (data: { users: Array<UserModel[] | PositionModel[] | DepartmentModel[]> }) => {
-        data.users[0].map((user: UserInterface) => {
+        const users = data.users[0] as UserModel[];
+        const positions = data.users[1] as PositionModel[];
+        const departments = data.users[2] as DepartmentModel[];
+
+        users.map((user: UserModel) => {
           user.positionName = '';
           user.departmentName = '';
 
-          const filteredPosition = data.users[1].filter((position: PositionInterface) => {
+          const filteredPosition = positions.filter((position: PositionModel) => {
             return user.positionId === position.id;
           });
 
           if (filteredPosition.length > 0) {
-            return user.positionName = filteredPosition[0].name;
+            user.positionName = filteredPosition[0].name;
           }
 
-          const filteredDepartment = data.users[2].filter((department: DepartmentInterface) => {
+          const filteredDepartment = departments.filter((department: DepartmentModel) => {
             return user.departmentId === department.id;
           });
 
           if (filteredDepartment.length > 0) {
-            return user.departmentName = filteredDepartment[0].name;
+            user.departmentName = filteredDepartment[0].name;
           }
 
           return user;
-        })
-      });
+        });
 
+        this.dataSource = new MatTableDataSource(users);
+        this.positions = positions;
+        this.departments = departments;
+      },
+      error => {
+        return this.error = error;
+      });
   }
 }

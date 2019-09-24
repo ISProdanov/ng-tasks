@@ -24,7 +24,8 @@ export class UsersResolver implements Resolve<Array<UserModel[] | PositionModel[
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot):
-    Observable<Array<UserModel[] | PositionModel[] | DepartmentModel[]>> {
+    Observable<Array<UserModel[] | PositionModel[] | DepartmentModel[]>>
+    | Observable<Array<UserModel[] | PositionModel[] | DepartmentModel[]>>{
     return zip(
       this.usersService.getData('users').pipe(
         map((users: UserInterface[]) => {
