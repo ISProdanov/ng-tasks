@@ -8,6 +8,7 @@ import {DepartmentInterface, PositionInterface, UserInterface} from '../interfac
 import {UsersService} from './users.service';
 import {PositionsService} from './positions.service';
 import {DepartmentsService} from './departments.service';
+import {DepartmentModel, PositionModel, UserModel} from '../models';
 
 
 @Injectable({
@@ -24,7 +25,7 @@ export class UsersResolver implements Resolve<Array<UserInterface[] | PositionIn
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot):
-    Observable<Array<UserInterface[] | PositionInterface[] | DepartmentInterface []>> {
+    Observable<Array<UserModel[] | PositionModel[] | DepartmentModel []>> {
     return this.positionsService.getPositions().pipe(
       switchMap((positions: PositionInterface[]) => {
         return this.departmentsService.getDepartments().pipe(
@@ -51,9 +52,14 @@ export class UsersResolver implements Resolve<Array<UserInterface[] | PositionIn
                     user.departmentName = filteredDepartment[0].name;
                   }
 
-                  return user;
+                  return new UserModel(user);
                 });
-
+                positions.map( (position: PositionInterface) => {
+                  return new PositionModel(position);
+                });
+                departments.map( (department: DepartmentInterface) => {
+                  return new DepartmentModel(department);
+                });
                 return [users, positions, departments];
               })
             );
