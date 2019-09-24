@@ -1,14 +1,14 @@
-import {Component, OnInit} from "@angular/core";
-import {MatTableDataSource} from "@angular/material/table";
-import {ActivatedRoute} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {MatTableDataSource} from '@angular/material/table';
+import {ActivatedRoute} from '@angular/router';
 
-import {UserModel} from "../../models";
-import {DepartmentInterface, PositionInterface, UserInterface} from "../../interfaces";
+import {UserInterface} from '../../interfaces';
+import {DepartmentModel, PositionModel} from '../../models';
 
 @Component({
-  selector: "app-users",
-  templateUrl: "./users.component.html",
-  styleUrls: ["./users.component.scss"]
+  selector: 'app-users',
+  templateUrl: './users.component.html',
+  styleUrls: ['./users.component.scss']
 })
 
 export class UsersComponent implements OnInit {
@@ -38,32 +38,50 @@ export class UsersComponent implements OnInit {
   ];
 
   public displayedColumns: string[];
-  public dataSource: MatTableDataSource<UserModel[] | PositionInterface[] | DepartmentInterface[]>;
+  public dataSource: MatTableDataSource<UserInterface>;
 
   public positionsValue: string;
   public departmentsValue: string;
 
-  public positions: PositionInterface[] = [];
-  public departments: DepartmentInterface[] = [];
-  public dataArray: any[] = [];
+  public positions: PositionModel[] = [];
+  public departments: DepartmentModel[] = [];
 
-  constructor(private route: ActivatedRoute) {
-  }
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.displayedColumns = this.columns.map(x => x.def);
 
-    this.route.data.subscribe((data: { users: Array<UserInterface[] | PositionInterface[] | DepartmentInterface[]> }) => {
-        data.users.map(res => {
-          this.dataArray.push(res)
+    this.route.data.subscribe(
+      (data: { users: Array<UserInterface[] | PositionModel[] | DepartmentModel[]> }) => {
+        const users = data.users[0] as UserInterface[];
+        const positions = data.users[1] as PositionModel[];
+        const departments = data.users[2] as DepartmentModel[];
+        users.map((user: UserInterface) => {
+          user.positionName = '';
+          user.departmentName = '';
+
+          const filteredPositions = positions.filter( (position: PositionModel) => {
+              return user.positionId === position.id;
+            }
+          );
+          if (filteredPositions.length > 0) {
+            user.positionName = filteredPositions[0].name;
+          }
+          const filteredDepartments = departments.filter( (department: DepartmentModel) => {
+              return user.positionId === department.id;
+            }
+          );
+          if (filteredDepartments.length > 0) {
+            user.departmentName = filteredDepartments[0].name;
+          }
+          return user;
         });
 
-        this.dataSource = new MatTableDataSource(this.dataArray[0]);
-        this.positions = this.dataArray[1];
-        this.departments = this.dataArray[2];
+        this.dataSource = new MatTableDataSource(users);
+        this.positions = positions;
+        this.departments = departments;
       }
-    )
-
-  };
+    );
+  }
 }
 
