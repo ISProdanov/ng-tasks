@@ -1,19 +1,18 @@
-import {Component, OnInit} from "@angular/core";
-import {MatTableDataSource} from "@angular/material/table";
-import {ActivatedRoute} from "@angular/router";
-import {DepartmentInterface, PositionInterface, UserInterface} from "../../interfaces";
-import {DepartmentModel, PositionModel, UserModel} from "../../models";
-import {catchError} from "rxjs/operators";
-import {throwError} from "rxjs";
-import {error} from "util";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {MatTableDataSource} from '@angular/material/table';
+import {ActivatedRoute} from '@angular/router';
+
+import {DepartmentModel, PositionModel, UserModel} from '../../models';
+import {Subscription} from 'rxjs';
+import {DepartmentInterface, PositionInterface} from "../../interfaces";
 
 @Component({
-  selector: "app-users",
-  templateUrl: "./users.component.html",
-  styleUrls: ["./users.component.scss"]
+  selector: 'app-users',
+  templateUrl: './users.component.html',
+  styleUrls: ['./users.component.scss']
 })
 
-export class UsersComponent implements OnInit {
+export class UsersComponent implements OnInit, OnDestroy {
   public columns: any[] = [
     {
       def: 'firstName',
@@ -40,56 +39,64 @@ export class UsersComponent implements OnInit {
   public displayedColumns: string[];
   public dataSource: MatTableDataSource<any>;
 
-  public dataArray: any[] = [];
-  public positions: PositionInterface[] = [];
-  public departments: DepartmentInterface[] = [];
+  public positions: PositionModel[] = [];
+  public departments: DepartmentModel[] = [];
 
   public positionsValue: string;
   public departmentsValue: string;
 
-  public errorMsg: string = '';
+  public error = '';
+  public dataSubscr: Subscription;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute) {
+  }
 
   ngOnInit(): void {
     this.displayedColumns = this.columns.map(x => x.def);
+    this.initData();
+  }
 
-    this.route.data.subscribe((data: { users: Array<UserModel[] | PositionModel[] | DepartmentModel[]> }) => {
-        data.users.map(res => {
-            this.dataArray.push(res)
-          }
-        );
+  ngOnDestroy(): void {
+    if (this.dataSubscr) {
+      this.dataSubscr.unsubscribe();
+    }
+  }
 
-        this.dataArray[0].map( (user: UserInterface) => {
-          const filteredPosition = this.dataArray[1].filter((position: PositionInterface) => {
-            if (user.positionId == position.id) {
-              user.positionName = position.name
-            }
+  public initData() {
+    this.dataSubscr = this.route.data.subscribe(
+      (data: { users: Array<UserModel[] | PositionModel[] | DepartmentModel[]> }) => {
+        data.users[0].map((user: UserModel) => {
+          user.positionName = '';
+          user.departmentName = '';
+
+          const filteredPosition = data.users[1].filter((position: PositionInterface) => {
+            return user.positionId === position.id;
           });
 
           if (filteredPosition.length > 0) {
-            return filteredPosition
+            return user.positionName = filteredPosition[0].name;
           }
 
-          const filteredDepartment = this.dataArray[2].filter((department: DepartmentInterface) => {
-            if (user.departmentId == department.id) {
-              user.departmentName = department.name
-            }
+          const filteredDepartment = data.users[2].filter((department: DepartmentInterface) => {
+            return user.departmentId === department.id;
           });
 
           if (filteredDepartment.length > 0) {
-            return filteredPosition
+            return user.departmentName = filteredDepartment[0].name;
           }
 
-          return user
-        });
-
-        this.dataSource = new MatTableDataSource(this.dataArray[0]);
-        this.positions = this.dataArray[1];
-        this.departments = this.dataArray[2];
-      },
-      error => this.errorMsg = error
-    )
-  };
+          return user;
+        })
+      });
+    //
+    // this.dataSource = new MatTableDataSource(data.users[0]);
+    // this.positions = data.users[1];
+    // this.departments = data.users[2];
+    // },
+    // error => {
+    //   return this.error = error;
+    // }
+    // );
+    // }
+  }
 }
-

@@ -1,38 +1,40 @@
-<mat-form-field>
-  <mat-label>Position</mat-label>
+<div *ngIf="!error">
+  <mat-form-field>
+    <mat-label>Position</mat-label>
 
-  <mat-select [(value)]="positionsValue">
-    <mat-option>None</mat-option>
+    <mat-select [(value)]="positionsValue">
+      <mat-option>None</mat-option>
 
-    <mat-option *ngFor="let position of positions" [value]="position.id">
-      {{position.name}}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+      <mat-option *ngFor="let position of positions" [value]="position.id">
+        {{position.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 
-<mat-form-field>
-  <mat-label>Department</mat-label>
+  <mat-form-field>
+    <mat-label>Department</mat-label>
 
-  <mat-select [(value)]="departmentsValue">
-    <mat-option>None</mat-option>
+    <mat-select [(value)]="departmentsValue">
+      <mat-option>None</mat-option>
 
-    <mat-option *ngFor="let department of departments" [value]="department.id">
-      {{department.name}}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+      <mat-option *ngFor="let department of departments" [value]="department.id">
+        {{department.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 
-<mat-table [dataSource]="dataSource | filter:positionsValue:departmentsValue">
-  <ng-container *ngFor="let column of columns" [cdkColumnDef]="column.def">
-    <mat-header-cell *cdkHeaderCellDef>{{ column.name }}</mat-header-cell>
-    <mat-cell *cdkCellDef="let row">{{ column.cell(row) }}</mat-cell>
-  </ng-container>
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-</mat-table>
+  <mat-table [dataSource]="dataSource | filter:positionsValue:departmentsValue">
+    <ng-container *ngFor="let column of columns" [cdkColumnDef]="column.def">
+      <mat-header-cell *cdkHeaderCellDef>{{ column.name }}</mat-header-cell>
+      <mat-cell *cdkCellDef="let row">{{ column.cell(row) }}</mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>
 
-<div *ngIf="errorMsg">
+<div *ngIf="error">
   <h1>An error occured:</h1>
 
-  <p>{{errorMsg}}</p>
+  <p>{{error}}</p>
 </div>
