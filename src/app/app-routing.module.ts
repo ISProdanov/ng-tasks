@@ -1,8 +1,8 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
-import {UsersComponent} from "./pages";
-import {UsersResolver} from "./services";
+import {UsersComponent} from './pages';
+import {UsersResolver} from './services';
 
 
 const routes: Routes = [

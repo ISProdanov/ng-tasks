@@ -5,7 +5,6 @@ import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
 
 import {DepartmentModel, PositionModel, UserModel} from '../../models';
-import {DepartmentInterface, PositionInterface, UserInterface} from '../../interfaces';
 
 @Component({
   selector: 'app-users',
@@ -47,7 +46,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   public departmentsValue: string;
 
   public error = '';
-  public dataSubscr: Subscription;
+  public dataSubscription: Subscription;
 
   constructor(private route: ActivatedRoute) {
   }
@@ -58,13 +57,13 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.dataSubscr) {
-      this.dataSubscr.unsubscribe();
+    if (this.dataSubscription) {
+      this.dataSubscription.unsubscribe();
     }
   }
 
   public initData() {
-    this.dataSubscr = this.route.data.subscribe(
+    this.dataSubscription = this.route.data.subscribe(
       (data: { users: Array<UserModel[] | PositionModel[] | DepartmentModel[]> }) => {
         const users = data.users[0] as UserModel[];
         const positions = data.users[1] as PositionModel[];

@@ -1,15 +1,15 @@
-import {Injectable} from "@angular/core";
-import {Observable} from "rxjs";
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
 
-import {MainService} from "./main.service";
-import {PositionInterface} from "../interfaces";
+import {MainService} from './main.service';
+import {PositionInterface} from '../interfaces';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 
 export class PositionsService extends MainService {
-  getData(controler: string): Observable<PositionInterface[]> {
-    return super.getData(controler);
+  getData(path: string): Observable<PositionInterface[]> {
+    return super.getData(path);
   }
 }
