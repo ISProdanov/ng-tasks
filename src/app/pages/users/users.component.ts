@@ -60,8 +60,6 @@ export class UsersComponent implements OnInit, OnDestroy {
         const positions = data.users[1] as PositionModel[];
         const departments = data.users[2] as DepartmentModel[];
 
-        console.log(data.users)
-
         this.dataSource = new MatTableDataSource(users);
         this.positions = positions;
         this.departments = departments;

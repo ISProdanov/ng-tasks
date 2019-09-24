@@ -61,6 +61,7 @@ export class UsersResolver implements Resolve<Array<UserModel[] | PositionModel[
                   return new DepartmentModel(department);
                 });
 
+                console.log(positionModels)
                 return [usersModel, positionModels, departmentsModels];
               })
             );
