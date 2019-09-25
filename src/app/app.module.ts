@@ -13,7 +13,7 @@ import {AppComponent} from './app.component';
 import {UsersComponent} from './pages';
 import {FilterPipe} from './pipes';
 import {UsersResolver} from './services';
-import {HttpErrorInterceptor} from './interceptors/http-error.interceptor';
+
 
 @NgModule({
   declarations: [
@@ -32,12 +32,7 @@ import {HttpErrorInterceptor} from './interceptors/http-error.interceptor';
     CdkTableModule
   ],
   providers: [
-    UsersResolver,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: HttpErrorInterceptor,
-      multi: true
-    }
+    UsersResolver
   ],
   bootstrap: [AppComponent]
 })

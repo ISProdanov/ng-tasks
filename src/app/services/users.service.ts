@@ -11,11 +11,11 @@ import {MainService} from './main.service';
 })
 export class UsersService extends MainService {
 
-  constructor( http: HttpClient) {
+  constructor(http: HttpClient) {
     super(http);
   }
 
- getUsers(): Observable<UserInterface[]> {
-   return super.getData('users');
- }
+  getUsers(): Observable<UserInterface[]> {
+    return super.getData('users') as Observable<UserInterface[]>;
+  }
 }

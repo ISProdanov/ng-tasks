@@ -15,6 +15,6 @@ export class PositionsService extends MainService {
     super(http);
   }
   getPositions(): Observable<PositionInterface[]> {
-    return super.getData('positions');
+    return super.getData('positions') as Observable<PositionInterface[]>;
   }
 }

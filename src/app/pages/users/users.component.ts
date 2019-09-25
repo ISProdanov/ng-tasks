@@ -45,7 +45,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   public positionsValue: string;
   public departmentsValue: string;
 
-  public error = '';
+  public error: string;
   public dataSubscription: Subscription;
 
   constructor(private route: ActivatedRoute) {
@@ -63,6 +63,8 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   public initData() {
+    this.error = null;
+
     this.dataSubscription = this.route.data.subscribe(
       (data: { users: Array<UserModel[] | PositionModel[] | DepartmentModel[]> }) => {
         const users = data.users[0] as UserModel[];
@@ -96,8 +98,10 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.positions = positions;
         this.departments = departments;
       },
-      error => {
-        return this.error = error;
-      });
+      (error) => {
+        this.error = error;
+      },
+      () => this.error = null
+    );
   }
 }

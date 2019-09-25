@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
+import {HttpErrorResponse} from '@angular/common/http';
 
-import {Observable, of, zip} from 'rxjs';
+import {Observable, throwError, zip} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 
 import {UsersService} from './users.service';
@@ -19,7 +20,8 @@ export class UsersResolver implements Resolve<Array<UserModel[] | PositionModel[
     private usersService: UsersService,
     private positionsService: PositionsService,
     private departmentsService: DepartmentsService
-  ) {}
+  ) {
+  }
 
   resolve(
     route: ActivatedRouteSnapshot,
@@ -45,7 +47,10 @@ export class UsersResolver implements Resolve<Array<UserModel[] | PositionModel[
         )
       )
     ).pipe(
-      catchError( err => of(err))
+      catchError((err: HttpErrorResponse) => {
+        console.log('Handling error locally and rethrowing it...', err);
+        return throwError(err.message);
+      })
     );
   }
 }

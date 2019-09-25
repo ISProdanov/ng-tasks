@@ -15,6 +15,6 @@ export class DepartmentsService extends MainService {
     super(http);
   }
   getDepartments(): Observable<DepartmentInterface[]> {
-    return super.getData('departments');
+    return super.getData('departments') as Observable<DepartmentInterface[]>;
   }
 }
