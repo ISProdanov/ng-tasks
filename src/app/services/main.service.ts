@@ -11,7 +11,8 @@ import {DataModel} from '../models';
   providedIn: 'root'
 })
 export class MainService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   protected getData(path: string): Observable<DataModel> {
     return this.http.get(`https://aluric.firebaseio.com/${path}.json`).pipe(
@@ -29,7 +30,7 @@ export class MainService {
   private handleError(error: HttpErrorResponse) {
     const model = new DataModel({
       status: error.status,
-      data: null
+      data: error.statusText
     });
 
     return of(model);

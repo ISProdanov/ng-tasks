@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from '@angular/router';
+import {ActivatedRouteSnapshot, NavigationExtras, Resolve, Router, RouterStateSnapshot} from '@angular/router';
 
 import {Observable, zip} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -8,7 +8,7 @@ import {UsersService} from './users.service';
 import {PositionsService} from './positions.service';
 import {DepartmentsService} from './departments.service';
 import {DataInterface, DepartmentInterface, PositionInterface, UserInterface} from '../interfaces';
-import {DepartmentModel, PositionModel, UserModel} from '../models';
+import {DataModel, DepartmentModel, PositionModel, UserModel} from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -29,29 +29,29 @@ export class UsersResolver implements Resolve<Array<UserModel[] | PositionModel[
     Observable<Array<UserModel[] | PositionModel[] | DepartmentModel[]>> {
     return zip(
       this.usersService.getUsers().pipe(
-        map((response: DataInterface) => {
+        map((response: DataModel) => {
           if (response.status === 200) {
             return response.data.map((user: UserInterface) => new UserModel(user));
           } else {
-            this.router.navigate(['/404']);
+            this.router.navigate(['/error', response,status]);
           }
         })
       ),
       this.positionsService.getPositions().pipe(
-        map((response: DataInterface) => {
+        map((response: DataModel) => {
           if (response.status === 200) {
             return response.data.map((position: PositionInterface) => new PositionModel(position));
           } else {
-            this.router.navigate(['/404']);
+            // this.router.navigate(['/error']);
           }
         })
       ),
       this.departmentsService.getDepartments().pipe(
-        map((response: DataInterface) => {
+        map((response: DataModel) => {
           if (response.status === 200) {
             return response.data.map((department: DepartmentInterface) => new DepartmentModel(department));
           } else {
-            this.router.navigate(['/404']);
+            // this.router.navigate(['/error']);
           }
         })
       )

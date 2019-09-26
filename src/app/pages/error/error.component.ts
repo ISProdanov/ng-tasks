@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import {MainService} from "../../services/main.service";
+import {Component} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {DataModel} from '../../models';
 
 @Component({
   selector: 'app-error',
   templateUrl: './error.component.html',
   styleUrls: ['./error.component.scss']
 })
-export class ErrorComponent implements OnInit {
-  public error: string;
+export class ErrorComponent {
+  error: string;
 
-  constructor(public mainService: MainService) { }
-
-  ngOnInit() {
+  constructor(private route: ActivatedRoute) {
+    this.route.params.subscribe((params: DataModel) => {
+      this.error = `${params.status} ${params.data}`;
+    });
   }
 
 }

@@ -14,12 +14,16 @@ const routes: Routes = [
     }
   },
   {
-    path: `404`,
+    path: `error`,
+    component: ErrorComponent,
+  },
+  {
+    path: `error/:status:data`,
     component: ErrorComponent,
   },
   {
     path: `**`,
-    redirectTo: '/404',
+    redirectTo: `/error`,
   }
 ];
 
