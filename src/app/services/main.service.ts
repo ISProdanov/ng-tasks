@@ -31,7 +31,6 @@ export class MainService {
     return of((responseData: DataInterface) => {
       responseData.status = error.status;
       responseData.data = null;
-      console.log(responseData.status);
       return new DataModel(responseData);
     });
   }

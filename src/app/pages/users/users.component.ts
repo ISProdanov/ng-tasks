@@ -71,6 +71,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.dataSubscription = this.route.data.subscribe(
       (data: { users: DataModel[] }) => {
         data.users.map( (respData: DataModel) => {
+          console.log(respData.status)
           if (respData.status !== 200) {
             this.router.navigate(['/404']);
           } else {

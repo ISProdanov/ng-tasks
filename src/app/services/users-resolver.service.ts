@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
+import {ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from '@angular/router';
 
 import {Observable, zip} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -18,7 +18,8 @@ export class UsersResolver implements Resolve<DataModel[]> {
   constructor(
     private usersService: UsersService,
     private positionsService: PositionsService,
-    private departmentsService: DepartmentsService
+    private departmentsService: DepartmentsService,
+    private router: Router
   ) {}
 
   resolve(
@@ -31,6 +32,8 @@ export class UsersResolver implements Resolve<DataModel[]> {
           if (response.status === 200) {
             response.data.map((user: UserInterface) => new UserModel(user));
             return response;
+          } else {
+            this.router.navigateByUrl('/404');
           }
         })
       ),
@@ -39,6 +42,8 @@ export class UsersResolver implements Resolve<DataModel[]> {
           if (response.status === 200) {
             response.data.map((position: PositionInterface) => new PositionModel(position));
             return response;
+          } else {
+            this.router.navigate(['/404']);
           }
         })
       ),
@@ -47,6 +52,8 @@ export class UsersResolver implements Resolve<DataModel[]> {
           if (response.status === 200) {
             response.data.map((department: DepartmentInterface) => new DepartmentModel(department));
             return response;
+          } else {
+            this.router.navigate(['/404']);
           }
         })
       )
