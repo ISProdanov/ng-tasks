@@ -1,17 +1,6 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {DataInterface} from "../interfaces/data.interface";
+import {DataInterface} from '../interfaces';
 
-
-
-@NgModule({
-  declarations: [],
-  imports: [
-    CommonModule
-  ]
-})
-
-export class DataModel implements DataInterface {
+export class DataModel {
   public status;
   public data;
 
