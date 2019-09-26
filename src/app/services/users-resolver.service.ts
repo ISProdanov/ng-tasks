@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, NavigationExtras, Resolve, Router, RouterStateSnapshot} from '@angular/router';
+import {ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from '@angular/router';
 
 import {Observable, zip} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -7,7 +7,7 @@ import {map} from 'rxjs/operators';
 import {UsersService} from './users.service';
 import {PositionsService} from './positions.service';
 import {DepartmentsService} from './departments.service';
-import {DataInterface, DepartmentInterface, PositionInterface, UserInterface} from '../interfaces';
+import {DepartmentInterface, PositionInterface, UserInterface} from '../interfaces';
 import {DataModel, DepartmentModel, PositionModel, UserModel} from '../models';
 
 @Injectable({
@@ -33,7 +33,7 @@ export class UsersResolver implements Resolve<Array<UserModel[] | PositionModel[
           if (response.status === 200) {
             return response.data.map((user: UserInterface) => new UserModel(user));
           } else {
-            this.router.navigate(['/error', response,status]);
+            this.router.navigate(['/error', response, status]);
           }
         })
       ),
@@ -42,7 +42,7 @@ export class UsersResolver implements Resolve<Array<UserModel[] | PositionModel[
           if (response.status === 200) {
             return response.data.map((position: PositionInterface) => new PositionModel(position));
           } else {
-            // this.router.navigate(['/error']);
+            this.router.navigate(['/error', response, status]);
           }
         })
       ),
@@ -51,7 +51,7 @@ export class UsersResolver implements Resolve<Array<UserModel[] | PositionModel[
           if (response.status === 200) {
             return response.data.map((department: DepartmentInterface) => new DepartmentModel(department));
           } else {
-            // this.router.navigate(['/error']);
+            this.router.navigate(['/error', response, status]);
           }
         })
       )
