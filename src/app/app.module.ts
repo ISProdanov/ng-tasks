@@ -13,13 +13,15 @@ import {AppComponent} from './app.component';
 import {UsersComponent} from './pages';
 import {FilterPipe} from './pipes';
 import {UsersResolver} from './services';
+import { ErrorComponent } from './pages/error/error.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     UsersComponent,
-    FilterPipe
+    FilterPipe,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,

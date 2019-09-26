@@ -1,10 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 import {Subscription} from 'rxjs';
 
-import {DepartmentModel, PositionModel, UserModel} from '../../models';
+import {DataModel, DepartmentModel, PositionModel, UserModel} from '../../models';
+
 
 @Component({
   selector: 'app-users',
@@ -48,8 +49,10 @@ export class UsersComponent implements OnInit, OnDestroy {
   public error: string;
   public dataSubscription: Subscription;
 
-  constructor(private route: ActivatedRoute) {
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.displayedColumns = this.columns.map(x => x.def);
@@ -66,42 +69,45 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.error = null;
 
     this.dataSubscription = this.route.data.subscribe(
-      (data: { users: Array<UserModel[] | PositionModel[] | DepartmentModel[]> }) => {
-        const users = data.users[0] as UserModel[];
-        const positions = data.users[1] as PositionModel[];
-        const departments = data.users[2] as DepartmentModel[];
+      (data: { users: DataModel[] }) => {
+        data.users.map( (respData: DataModel) => {
+          if (respData.status !== 200) {
+            this.router.navigate(['/404']);
+          } else {
+            const users = data.users[0].data as UserModel[];
+            const positions = data.users[1].data as PositionModel[];
 
-        users.map((user: UserModel) => {
-          user.positionName = '';
-          user.departmentName = '';
+            const departments = data.users[2].data as DepartmentModel[];
 
-          const filteredPosition = positions.filter((position: PositionModel) => {
-            return user.positionId === position.id;
-          });
+            users.map((user: UserModel) => {
+              user.positionName = '';
+              user.departmentName = '';
 
-          if (filteredPosition.length > 0) {
-            user.positionName = filteredPosition[0].name;
+              const filteredPosition = positions.filter((position: PositionModel) => {
+                return user.positionId === position.id;
+              });
+
+              if (filteredPosition.length > 0) {
+                user.positionName = filteredPosition[0].name;
+              }
+
+              const filteredDepartment = departments.filter((department: DepartmentModel) => {
+                return user.departmentId === department.id;
+              });
+
+              if (filteredDepartment.length > 0) {
+                user.departmentName = filteredDepartment[0].name;
+              }
+
+              return user;
+            });
+
+            this.dataSource = new MatTableDataSource(users);
+            this.positions = positions;
+            this.departments = departments;
           }
-
-          const filteredDepartment = departments.filter((department: DepartmentModel) => {
-            return user.departmentId === department.id;
-          });
-
-          if (filteredDepartment.length > 0) {
-            user.departmentName = filteredDepartment[0].name;
-          }
-
-          return user;
         });
-
-        this.dataSource = new MatTableDataSource(users);
-        this.positions = positions;
-        this.departments = departments;
       },
-      (error) => {
-        this.error = error;
-      },
-      () => this.error = null
     );
   }
 }

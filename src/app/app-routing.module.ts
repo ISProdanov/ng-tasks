@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
-import {UsersComponent} from './pages';
+import {ErrorComponent, UsersComponent} from './pages';
 import {UsersResolver} from './services';
 
 
@@ -12,6 +12,14 @@ const routes: Routes = [
     resolve: {
       users: UsersResolver
     }
+  },
+  {
+    path: `404`,
+    component: ErrorComponent,
+  },
+  {
+    path: `**`,
+    redirectTo: '/404',
   }
 ];
 
@@ -19,4 +27,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}
