@@ -33,7 +33,7 @@ export class UsersResolver implements Resolve<DataModel[]> {
             response.data.map((user: UserInterface) => new UserModel(user));
             return response;
           } else {
-            this.router.navigateByUrl('/404');
+            this.router.navigate(['/404']);
           }
         })
       ),
