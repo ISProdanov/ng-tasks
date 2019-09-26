@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 
-import {Observable, of, throwError} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 
 import {DataInterface} from '../interfaces';
@@ -11,6 +11,7 @@ import {DataModel} from '../models';
   providedIn: 'root'
 })
 export class MainService {
+  public errorMessage: string;
   constructor(private http: HttpClient) {}
 
   protected getData(path: string): Observable<DataModel> {
@@ -27,15 +28,11 @@ export class MainService {
   }
 
   private handleError(error: HttpErrorResponse) {
-    let errorMessage = 'An Error occurred';
-
-    if(!error.error || !error.error.error) {
-      return throwError(errorMessage);
-    }
-
-    switch (error.error.error.message) {
-      case 
-    }
-
+    return of((responseData: DataInterface) => {
+      responseData.status = error.status;
+      responseData.data = null;
+      console.log(responseData.status);
+      return new DataModel(responseData);
+    });
   }
 }
