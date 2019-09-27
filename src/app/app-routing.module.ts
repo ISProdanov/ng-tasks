@@ -18,7 +18,7 @@ const routes: Routes = [
     component: ErrorComponent,
   },
   {
-    path: `error/:error-status:error-data`,
+    path: `error/:status:data`,
     component: ErrorComponent,
   },
   {
