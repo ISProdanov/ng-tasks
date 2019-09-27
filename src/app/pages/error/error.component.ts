@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {DataModel} from '../../models';
 
@@ -7,13 +7,16 @@ import {DataModel} from '../../models';
   templateUrl: './error.component.html',
   styleUrls: ['./error.component.scss']
 })
-export class ErrorComponent {
+export class ErrorComponent implements OnInit {
   error: string;
 
   constructor(private route: ActivatedRoute) {
+  }
+
+  ngOnInit(): void {
     this.route.params.subscribe((params: DataModel) => {
       this.error = `${params.status} ${params.data}`;
     });
-  }
 
+  }
 }

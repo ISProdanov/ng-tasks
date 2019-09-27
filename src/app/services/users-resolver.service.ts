@@ -33,7 +33,7 @@ export class UsersResolver implements Resolve<Array<UserModel[] | PositionModel[
           if (response.status === 200) {
             return response.data.map((user: UserInterface) => new UserModel(user));
           } else {
-            this.router.navigate(['/error', response, status]);
+            this.router.navigate(['/error', response]);
           }
         })
       ),
@@ -42,7 +42,7 @@ export class UsersResolver implements Resolve<Array<UserModel[] | PositionModel[
           if (response.status === 200) {
             return response.data.map((position: PositionInterface) => new PositionModel(position));
           } else {
-            this.router.navigate(['/error', response, status]);
+            this.router.navigate(['/error', response]);
           }
         })
       ),
@@ -51,7 +51,7 @@ export class UsersResolver implements Resolve<Array<UserModel[] | PositionModel[
           if (response.status === 200) {
             return response.data.map((department: DepartmentInterface) => new DepartmentModel(department));
           } else {
-            this.router.navigate(['/error', response, status]);
+            this.router.navigate(['/error', response]);
           }
         })
       )
