@@ -15,7 +15,7 @@ export class MainService {
   }
 
   protected getData(path: string): Observable<DataModel> {
-    return this.http.get(`https://alaric.firebaseio.com/${path}.json`).pipe(
+    return this.http.get(`https://aluric.firebaseio.com/${path}.json`).pipe(
       map((responseData: DataInterface) => {
           return new DataModel({
             status: 200,
